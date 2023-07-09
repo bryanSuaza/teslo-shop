@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   IsArray,
   IsIn,
@@ -39,4 +40,9 @@ export class CreateProductDto {
   @IsString()
   @IsIn(['men', 'women', 'kid', 'unisex'])
   gender: string;
+
+  @IsString({ each: true })
+  @IsArray()
+  @IsOptional()
+  tags: string[];
 }

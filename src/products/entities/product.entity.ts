@@ -1,9 +1,12 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+/* eslint-disable prettier/prettier */
+import { BeforeInsert, BeforeUpdate, Column, Entity, Generated, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Product {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+ // @PrimaryGeneratedColumn('increment')
+  @PrimaryColumn()
+  @Generated('uuid')
+  id: string;
 
   @Column('varchar', {
     length: 100,
@@ -37,6 +40,12 @@ export class Product {
   @Column('varchar')
   gender: string;
 
+  @Column('simple-array',{
+    nullable: true
+  })
+  tags: string[];
+
+
   @BeforeInsert()
   checkLogsInsert() {
     if (!this.slug) {
@@ -49,6 +58,13 @@ export class Product {
       .replaceAll("'", '');
   }
 
-  //tags
+  @BeforeUpdate()
+  checkLogsUpdate() {
+    this.slug = this.slug
+      .toLowerCase()
+      .replaceAll(' ', '_')
+      .replaceAll("'", '');
+  }
+
   //images
 }
